@@ -35,5 +35,6 @@ typedef struct SPI_Buf{
 }SPI_Buf_TypeDef;
 
 void _SPI_Dev_Init(int argc, char *argv[]);
+void _SPI_Buf_init(SPI_Buf_TypeDef *buf);
 
 #endif // SPI_H

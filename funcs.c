@@ -33,18 +33,17 @@ void bin_echo(uint8_t byte)
     {
         if(byte & 0x80)printf("1");
         else printf("0");
+        if(i == 3)putchar(' ');
         byte <<= 1;
     }
 }
 
 void print_sim(SIM_TypeDef *sim)
 {
-    printf("SIM State:%d\tAD:%d\n",(uint16_t)sim->state,(uint16_t)sim->AD);
-    printf("ICCID:\n");
-    print_array(sim->ICCID);
+    printf("SIM State:%.2X\tAD:%.2X\n",(uint16_t)sim->state,(uint16_t)sim->AD);
+    printf("ICCID:");print_array(sim->ICCID);
     puts("");
-    printf("IMSI:\n");
-    print_array(sim->IMSI);
+    printf("IMSI :");print_array(sim->IMSI);
     puts("");
     printf("APDU Rx Buffer Length:%d\n",(uint16_t)sim->Rx_Length);
     printf("APDU Rx Buffer:\n");
@@ -66,37 +65,38 @@ void print_MCU(MCU_TypeDef *mcu)
         print_sim(&mcu->SIM[i]);
         puts("\n");
     }
-    //Print Rx Buffer
-    printf("RxBuf:\n");
+/*    //Print Rx Buffer
+    printf("======================= RxBuf: =======================\n");
     printf("Buffer State:%d\n",buf->state);
     printf("Buffer Length:%d\n",buf->Length);
     printf("Buffer Left Length:%d\n",buf->Buf_Len_Left);
     printf("Buffer Checksum:%d\n",buf->checksum);
     printf("Buffer pre-checksum:%d\n",buf->pre_sum);
-    printf("Buffer:\n");
-    print_array(buf->Buf);
+//    printf("Buffer:\n");
+//    print_array(buf->Buf);
 
     buf = &mcu->TxBuf;
     //Print Tx Buffer
-    printf("TxBuf:\n");
+    printf("======================= TxBuf: =======================\n");
     printf("Buffer State:%d\n",buf->state);
     printf("Buffer Length:%d\n",buf->Length);
     printf("Buffer Left Length:%d\n",buf->Buf_Len_Left);
     printf("Buffer Checksum:%d\n",buf->checksum);
     printf("Buffer pre-checksum:%d\n",buf->pre_sum);
-    printf("Buffer:\n");
-    print_array(buf->Buf);
+//    printf("Buffer:\n");
+//    print_array(buf->Buf);
     //Print event flag
-    printf("SIM_APDUTblR:");bin_echo(mcu->SIM_APDUTblR);puts("");
-    printf("SIM_APDUTblW:");bin_echo(mcu->SIM_APDUTblW);puts("");
+    */
+    printf("SIM_APDUTblR :");bin_echo(mcu->SIM_APDUTblR);puts("");
+    printf("SIM_APDUTblW :");bin_echo(mcu->SIM_APDUTblW);puts("");
     printf("SIM_CheckErrR:");bin_echo(mcu->SIM_CheckErrR);puts("");
     printf("SIM_CheckErrW:");bin_echo(mcu->SIM_CheckErrW);puts("");
-    printf("SIM_InfoTblR:");bin_echo(mcu->SIM_InfoTblR);puts("");
-    printf("SIM_InfoTblW:");bin_echo(mcu->SIM_InfoTblW);puts("");
+    printf("SIM_InfoTblR :");bin_echo(mcu->SIM_InfoTblR);puts("");
+    printf("SIM_InfoTblW :");bin_echo(mcu->SIM_InfoTblW);puts("");
     printf("SIM_StateTblR:");bin_echo(mcu->SIM_StateTblR);puts("");
     printf("SIM_StateTblW:");bin_echo(mcu->SIM_StateTblW);puts("");
-    printf("SIM_VersionR:");bin_echo(mcu->SIM_VersionR);puts("");
-    printf("SIM_VersionW:");bin_echo(mcu->SIM_VersionW);puts("");
+    printf("SIM_VersionR :");bin_echo(mcu->VersionR);puts("");
+    printf("SIM_VersionW :");bin_echo(mcu->VersionW);puts("");
     //Print version
     printf("Hardware version:");print_array(mcu->HardWare_Version);puts("");
     printf("Software version:");print_array(mcu->SoftWare_Version);puts("");

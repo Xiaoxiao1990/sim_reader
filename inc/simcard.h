@@ -28,12 +28,14 @@ typedef struct{
     uint8_t SoftWare_Version[3];
     uint8_t SIM_StateTblR, SIM_StateTblW;
     uint8_t SIM_APDUTblR, SIM_APDUTblW;
-    uint8_t SIM_VersionR,SIM_VersionW;
     uint8_t SIM_InfoTblR, SIM_InfoTblW;
     uint8_t SIM_CheckErrR,SIM_CheckErrW;
+    uint8_t SIM_ResetTbl,SIM_StopTbl;
+    uint8_t VersionR,VersionW;
 }MCU_TypeDef;
 /******************* end ************************/
-void SIM_info_init(SIM_TypeDef *sim);
+void _SIM_info_init(SIM_TypeDef *sim);
 void _SIMs_Table_init(void);
+int _apdu_onload(uint8_t *data,SIM_TypeDef *sim,uint8_t len);
 
 #endif // SIMCARD_H
