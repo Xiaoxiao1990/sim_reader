@@ -138,3 +138,123 @@ void pabort(const char *s)
     perror(s);
     abort();
 }
+
+uint8_t slot_parse(uint8_t *ActionTbl)
+{
+    uint8_t slot;
+    if(*ActionTbl & SIM_NO_ALL_BIT)
+    {
+        slot = SIM_NO_ALL;
+    }
+    else if(*ActionTbl & SIM_NO_1_BIT)
+    {
+        slot = SIM_NO_1;
+    }
+    else if(*ActionTbl & SIM_NO_2_BIT)
+    {
+        slot = SIM_NO_2;
+    }
+    else if(*ActionTbl & SIM_NO_3_BIT)
+    {
+        slot = SIM_NO_3;
+    }
+    else if(*ActionTbl & SIM_NO_4_BIT)
+    {
+        slot = SIM_NO_4;
+    }
+    else if(*ActionTbl & SIM_NO_5_BIT)
+    {
+        slot = SIM_NO_5;
+    }
+    return slot;
+}
+
+void clear_flag(uint8_t *ActionTbl, uint8_t slot)
+{
+    switch(slot)
+    {
+        case SIM_NO_ALL:*ActionTbl &= ~SIM_NO_ALL;break;
+        case SIM_NO_1:*ActionTbl &= ~SIM_NO_1_BIT;break;
+        case SIM_NO_2:*ActionTbl &= ~SIM_NO_2_BIT;break;
+        case SIM_NO_3:*ActionTbl &= ~SIM_NO_3_BIT;break;
+        case SIM_NO_4:*ActionTbl &= ~SIM_NO_4_BIT;break;
+        case SIM_NO_5:*ActionTbl &= ~SIM_NO_5_BIT;break;
+        default:;
+    }
+}
+
+/******************************************************************************
+ * Function:print changes
+ * ***************************************************************************/
+void _SIMs_Printer(void)
+{
+    MCU_TypeDef *mcu;
+    uint8_t *actionTbl;
+    uint8_t sim_no = 0;
+    uint8_t i;
+    for(i = 0;i < MCU_NUMS;i++)
+    {
+        mcu = &MCUs[i];
+
+        while(mcu->SIM_StateTblW | mcu->SIM_APDUTblW | mcu->SIM_CheckErrW | mcu->SIM_InfoTblW | mcu->VersionW)
+        {
+            if(mcu->SIM_StateTblW)
+            {
+                actionTbl = &(mcu->SIM_StateTblW);
+                sim_no = slot_parse(actionTbl);
+                if(sim_no > 0)
+                {
+                    printf("SIM[%d] state changed:",((i*SIM_NUMS)+sim_no));
+                    printf("%.2X\n",mcu->SIM[sim_no - 1].state);
+                }
+            }
+            else if(mcu->SIM_APDUTblW)
+            {
+                actionTbl = &(mcu->SIM_APDUTblW);
+                sim_no = slot_parse(actionTbl);
+                if(sim_no > 0)
+                {
+                    printf("APDU ACK. from SIM[%d]:\n",((i*SIM_NUMS)+sim_no));
+                    print_array_r(mcu->SIM[sim_no - 1].Rx_APDU,mcu->SIM[sim_no - 1].Rx_Length);
+                    puts("");
+                }
+            }
+            else if(mcu->SIM_CheckErrW)
+            {
+                actionTbl = &(mcu->SIM_CheckErrW);
+                sim_no = slot_parse(actionTbl);
+                if(sim_no > 0)
+                {
+                    printf("SIM[%d] transmit error.\n",((i*SIM_NUMS)+sim_no));
+                }
+            }
+            else if(mcu->SIM_InfoTblW)
+            {
+                actionTbl = &(mcu->SIM_InfoTblW);
+                sim_no = slot_parse(actionTbl);
+                if(sim_no > 0)
+                {
+                    printf("SIM[%d] information changed:\n",((i*SIM_NUMS)+sim_no));
+                    printf("ICCID:");
+                    print_array(mcu->SIM[sim_no - 1].ICCID);
+                    puts("");
+                    printf("IMSI :");
+                    print_array(mcu->SIM[sim_no - 1].IMSI);
+                    puts("");
+                    printf("AD:%.2X\n",mcu->SIM[sim_no - 1].AD);
+                }
+            }
+            else if(mcu->VersionW)
+            {
+                actionTbl = &(mcu->VersionW);
+                mcu->VersionW &= 0x00;
+                printf("MCU[%d] hardware & software Version Changed:\n Hardware version:",i);
+                print_array(mcu->HardWare_Version);puts("");
+                printf("Software version:");
+                print_array(mcu->HardWare_Version);puts("");
+            }
+            clear_flag(actionTbl,sim_no);
+        }
+    }
+
+}

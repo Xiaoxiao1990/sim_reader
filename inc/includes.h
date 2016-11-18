@@ -21,7 +21,7 @@
 /******************* end ************************/
 
 MCU_TypeDef MCUs[MCU_NUMS];
-int frame_package(MCU_TypeDef *mcu);
+int frame_package(MCU_TypeDef *mcu,uint8_t mcu_num);
 int frame_parse(MCU_TypeDef *mcu);
 int transfer(uint8_t mcu_num);
 #endif // INCLUDES_H

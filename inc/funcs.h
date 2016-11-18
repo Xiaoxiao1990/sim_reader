@@ -10,8 +10,6 @@
 #ifndef FUNCS_H
 #define FUNCS_H
 
-//#include "includes.h"
-
 void pabort(const char *s);
 
 void flush_array_r(uint8_t *arr,uint16_t arr_len);
@@ -23,5 +21,8 @@ void print_array_r(uint8_t *arr,uint16_t arr_len);
 void bin_echo(uint8_t byte);
 void print_sim(SIM_TypeDef *sim);
 void print_MCU(MCU_TypeDef *mcu);
+uint8_t slot_parse(uint8_t *actionTbl);
+void clear_flag(uint8_t *ActionTbl, uint8_t slot);
+void _SIMs_Printer(void);
 
 #endif // FUNCS_H

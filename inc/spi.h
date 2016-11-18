@@ -34,6 +34,17 @@ typedef struct SPI_Buf{
     uint8_t checksum;
 }SPI_Buf_TypeDef;
 
+typedef enum{
+    DUMMY_READ = 0,
+    READ_SWHW,
+    STOP_SIM,
+    RESET_SIM,
+    READ_INFO,
+    READ_STATE,
+    APDU_CMD,
+    TRANS_ERR
+}DataType_TypeDef;
+
 void _SPI_Dev_Init(int argc, char *argv[]);
 void _SPI_Buf_init(SPI_Buf_TypeDef *buf);
 

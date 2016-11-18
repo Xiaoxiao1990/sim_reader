@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 //    MCUs[0].SIM_StopTbl |= (SIM_NO_1_BIT|SIM_NO_2_BIT|SIM_NO_3_BIT|SIM_NO_4_BIT|SIM_NO_5_BIT);
     MCUs[0].VersionR |= (SIM_NO_1_BIT|SIM_NO_2_BIT|SIM_NO_3_BIT|SIM_NO_4_BIT|SIM_NO_5_BIT);
     printf("+++++++++++++++++++++++++++++++++++++++ Read SIM Info. & Send Read Version Read SIM state. +++++++++++++++++++++++++++++++++++++\n");
-    sleep(3);
+//    sleep(3);
     transfer(0);
     sleep(1);
     /*
@@ -56,7 +56,7 @@ int main(int argc, char *argv[])
 //    transfer(0);
     MCUs[0].SIM_ResetTbl |= (SIM_NO_1_BIT|SIM_NO_2_BIT|SIM_NO_3_BIT|SIM_NO_4_BIT|SIM_NO_5_BIT);
     printf("+++++++++++++++++++++++++++++++++++++++ Restartting SIM Cards +++++++++++++++++++++++++++++++++++++\n");
-    sleep(3);
+//    sleep(3);
     transfer(0);
     sleep(1);
     printf("Please Wait ...\n");
@@ -66,6 +66,7 @@ int main(int argc, char *argv[])
     printf("Please Wait ...\n");
     sleep(1);
     MCUs[0].SIM_APDUTblR |= (SIM_NO_1_BIT|SIM_NO_2_BIT|SIM_NO_3_BIT|SIM_NO_4_BIT|SIM_NO_5_BIT);
+    MCUs[0].SIM_StateTblR |= (SIM_NO_1_BIT|SIM_NO_2_BIT|SIM_NO_3_BIT|SIM_NO_4_BIT|SIM_NO_5_BIT);
     uint8_t apdu1[] = {
         0x00,0x88,0x00,0x81,0x22
     },
@@ -77,27 +78,27 @@ int main(int argc, char *argv[])
     _apdu_onload(apdu1,&MCUs[0].SIM[i],ARRAY_SIZE(apdu1));
 
     printf("+++++++++++++++++++++++++++++++++++++++ Send Authentication Request. +++++++++++++++++++++++++++++++++++++\n");
-    sleep(3);
+//    sleep(3);
     transfer(0);
     sleep(1);
     printf("+++++++++++++++++++++++++++++++++++++++ Read Authentication Request Acknowledge. & Send Random Number +++++++++++++++++++++++++++++++++++++\n");
-    sleep(3);
+//    sleep(3);
     MCUs[0].SIM_APDUTblR |= (SIM_NO_1_BIT|SIM_NO_2_BIT|SIM_NO_3_BIT|SIM_NO_4_BIT|SIM_NO_5_BIT);
     for(i = 0;i < SIM_NUMS;i++)
     _apdu_onload(apdu2,&MCUs[0].SIM[i],ARRAY_SIZE(apdu2));
     transfer(0);
     sleep(1);
     printf("+++++++++++++++++++++++++++++++++++++++ Read Authentication State +++++++++++++++++++++++++++++++++++++\n");
-    sleep(3);
+//    sleep(3);
     transfer(0);
-    MCUs[0].SIM_StateTblR |= (SIM_NO_1_BIT|SIM_NO_2_BIT|SIM_NO_3_BIT|SIM_NO_4_BIT|SIM_NO_5_BIT);
+    MCUs[0].SIM_StopTbl |= (SIM_NO_1_BIT|SIM_NO_2_BIT|SIM_NO_3_BIT|SIM_NO_4_BIT|SIM_NO_5_BIT);
     sleep(1);
     printf("+++++++++++++++++++++++++++++++++++++++ Stop SIM Cards +++++++++++++++++++++++++++++++++++++\n");
-    sleep(3);
+//    sleep(3);
     transfer(0);
     sleep(1);
     printf("+++++++++++++++++++++++++++++++++++++++ Read SIM State +++++++++++++++++++++++++++++++++++++\n");
-    sleep(2);
+//    sleep(2);
     transfer(0);
     sleep(1);
     printf("Repeat Times:%d\n",++RepeatTimes);
