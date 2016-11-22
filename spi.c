@@ -18,7 +18,7 @@ typedef enum{
 
 static const char *dev_path[2] ={
     "/dev/spidev0.0",
-    "/dev/spidev0.1"
+    "/dev/spidev2.0"
 };
 static const char *device = &dev_path[SPI0];
 static uint8_t spi_mode;
@@ -151,7 +151,7 @@ void _SPI_Dev_Init(int argc, char *argv[])
 
     //close SPI0
     close(fd);
-    /*
+
     //SPI1 init
     fd = open(dev_path[SPI1], O_RDWR);
     if (fd < 0)pabort("Can't open SPI[1]");
@@ -185,7 +185,7 @@ void _SPI_Dev_Init(int argc, char *argv[])
 
     //close SPI1
     close(fd);
-*/
+
 #ifdef CODING_DEBUG_NO_PRINT
     printf("==================End [_SPI_Dev_Init()]=================\n");
 #endif
